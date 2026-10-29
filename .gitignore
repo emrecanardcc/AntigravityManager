@@ -1,0 +1,23 @@
+## Visual Studio / .NET
+[Bb]in/
+[Oo]bj/
+publish/
+[Ll]og/
+[Ll]ogs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code / IDE
+.vscode/
+.vs/
+
+# Sensitive data & local configs
+config.json
+accounts.json
+*.pfx
+*.certificate

@@ -1,0 +1,94 @@
+<Window x:Class="AntigravityManager.Views.EditAccountDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Hesap Bilgilerini Düzenle" 
+        Height="360" Width="460"
+        WindowStartupLocation="CenterOwner"
+        Background="#181825"
+        Foreground="#CDD6F4"
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#1E1E2E"/>
+            <Setter Property="Foreground" Value="#CDD6F4"/>
+            <Setter Property="BorderBrush" Value="#45475A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#BAC2DE"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Padding="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Başlık -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="✏️ Hesabı Yeniden Adlandır" 
+                           FontSize="18" FontWeight="Bold" Foreground="#FFFFFF"/>
+                <TextBlock Text="Hesap adını ve görüntülenen e-posta etiketini dilediğiniz gibi özelleştirebilirsiniz." 
+                           Foreground="#A6ADC8" FontSize="11" Margin="0,3,0,0"/>
+            </StackPanel>
+
+            <!-- Hesap Adı -->
+            <StackPanel Grid.Row="1" Margin="0,0,0,16">
+                <TextBlock Text="Görünecek Hesap Adı:" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                <TextBox x:Name="TxtName"/>
+            </StackPanel>
+
+            <!-- E-posta / Etiket -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,16">
+                <TextBlock Text="Görünecek E-posta / Açıklama:" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                <TextBox x:Name="TxtEmail"/>
+            </StackPanel>
+
+            <!-- Alt Butonlar -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="İptal" Width="90" Height="38" Margin="0,0,10,0"
+                        Background="#313244" Foreground="#CDD6F4" BorderThickness="0"
+                        Cursor="Hand" Click="BtnCancel_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button Content="Kaydet" Width="110" Height="38"
+                        Background="#6366F1" Foreground="#FFFFFF" FontWeight="Bold" BorderThickness="0"
+                        Cursor="Hand" Click="BtnSave_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

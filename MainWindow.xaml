@@ -1,0 +1,207 @@
+<Window x:Class="AntigravityManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:AntigravityManager.Models"
+        mc:Ignorable="d"
+        Title="Antigravity Çoklu Hesap Yöneticisi" 
+        Height="680" Width="960"
+        MinHeight="550" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#11111B"
+        Foreground="#CDD6F4"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Project Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Content (Account List) -->
+            <RowDefinition Height="*"/>
+            <!-- Bottom Status Footer -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ÜST PANEL (HEADER) -->
+        <Border Grid.Row="0" Background="#181825" BorderBrush="#313244" BorderThickness="0,0,0,1" Padding="24,18">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#6366F1" CornerRadius="10" Width="40" Height="40" Margin="0,0,14,0">
+                            <TextBlock Text="🚀" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel>
+                            <TextBlock Text="Antigravity Çoklu Hesap Yöneticisi" 
+                                       FontSize="20" FontWeight="Bold" Foreground="#FFFFFF"/>
+                            <TextBlock Text="Gemini hesaplarınız arasında tek tıkla şifresiz geçiş yapın" 
+                                       Foreground="#A6ADC8" FontSize="12" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Sağ Butonlar -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="🛑 Oturumu Kapat" Style="{StaticResource RoundedButton}"
+                            Background="#313244" Foreground="#F38BA8" Margin="0,0,12,0"
+                            Click="BtnCloseAll_Click" ToolTip="Şu an açık olan Antigravity uygulamasını kapatır"/>
+
+                    <Button Content="✨ Yeni Hesap Bağla" Style="{StaticResource RoundedButton}"
+                            Background="#6366F1" Foreground="#FFFFFF"
+                            Click="BtnAddAccountWizard_Click" ToolTip="Yeni bir Google hesabı bağlamak için sihirbazı başlatır"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- PROJE VE AYARLAR BARI -->
+        <Border Grid.Row="1" Background="#1E1E2E" BorderBrush="#313244" BorderThickness="0,0,0,1" Padding="24,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="📁 Hedef Proje Klasörü:" 
+                           VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,12,0" Foreground="#BAC2DE"/>
+
+                <Border Grid.Column="1" Background="#11111B" BorderBrush="#45475A" BorderThickness="1" CornerRadius="6" Margin="0,0,12,0">
+                    <TextBox x:Name="TxtProjectPath" Text="c:\Projeler\AkilliTahtaSistemi" 
+                             Background="Transparent" Foreground="#CDD6F4" BorderThickness="0"
+                             Padding="10,6" FontSize="13" TextChanged="TxtProjectPath_TextChanged"/>
+                </Border>
+
+                <Button Grid.Column="2" Content="Gözat..." Style="{StaticResource RoundedButton}"
+                        Background="#313244" Foreground="#CDD6F4" Padding="12,6" Margin="0,0,16,0"
+                        Click="BtnBrowseProject_Click"/>
+
+                <!-- Toplam Hesap Rozeti -->
+                <Border Grid.Column="3" Background="#252538" CornerRadius="6" Padding="12,6" BorderBrush="#45475A" BorderThickness="1">
+                    <TextBlock x:Name="TxtSummary" Text="Yükleniyor..." Foreground="#A6ADC8" FontSize="12" FontWeight="SemiBold"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- HESAP KARTLARI LİSTESİ -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="24,16">
+            <ItemsControl x:Name="AccountsList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:AccountProfile}">
+                        <Border Background="#1E1E2E" BorderBrush="{Binding ActiveBorderColor}" BorderThickness="1.5" 
+                                CornerRadius="12" Margin="0,0,0,14" Padding="20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <!-- Avatar & Info -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Aksiyon Butonları -->
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- SOL: HESAP BİLGİLERİ -->
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <!-- Baş Harf Avatarı -->
+                                        <Border Background="#313244" CornerRadius="20" Width="38" Height="38" Margin="0,0,12,0">
+                                            <TextBlock Text="👤" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,10,0"/>
+                                                <Border Background="{Binding ActiveBadgeColor}" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding ActiveBadgeText}" Foreground="#FFFFFF" FontSize="11" FontWeight="Bold"/>
+                                                </Border>
+                                            </StackPanel>
+
+                                            <TextBlock Text="{Binding Email}" Foreground="#A6ADC8" FontSize="13" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Alt Bilgiler -->
+                                    <StackPanel Orientation="Horizontal" Margin="50,8,0,0">
+                                        <TextBlock Text="{Binding LastUsedText}" Foreground="#6C7086" FontSize="11" Margin="0,0,16,0"/>
+                                        <TextBlock Text="Açılma Sayısı: " Foreground="#585B70" FontSize="11"/>
+                                        <TextBlock Text="{Binding UseCount}" Foreground="#89B4FA" FontSize="11" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- SAĞ: GEÇİŞ & AKSİYON BUTONLARI -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <!-- Bu Hesaba Geç Butonu -->
+                                    <Button Content="🚀 Bu Hesaba Geç" Style="{StaticResource RoundedButton}"
+                                            Background="#6366F1" Foreground="#FFFFFF" FontSize="14" Padding="18,10" Margin="0,0,8,0"
+                                            Click="BtnSwitch_Click" Tag="{Binding}"
+                                            ToolTip="Antigravity'yi kapatıp bu Google hesabıyla anında başlatır"/>
+
+                                    <!-- Düzenle Butonu -->
+                                    <Button Content="✏️" Style="{StaticResource RoundedButton}"
+                                            Background="#313244" Foreground="#CDD6F4" FontSize="14" Padding="11,10" Margin="0,0,8,0"
+                                            Click="BtnEdit_Click" Tag="{Binding}"
+                                            ToolTip="Hesap adını veya e-posta etiketini düzenle"/>
+
+                                    <!-- Kısayol Butonu -->
+                                    <Button Content="📌" Style="{StaticResource RoundedButton}"
+                                            Background="#313244" Foreground="#CDD6F4" FontSize="14" Padding="11,10" Margin="0,0,8,0"
+                                            Click="BtnShortcut_Click" Tag="{Binding}"
+                                            ToolTip="Bu hesap için doğrudan masaüstü kısayolu oluştur"/>
+
+                                    <!-- Sil Butonu -->
+                                    <Button Content="🗑️" Style="{StaticResource RoundedButton}"
+                                            Background="#313244" Foreground="#F38BA8" FontSize="14" Padding="11,10"
+                                            Click="BtnDelete_Click" Tag="{Binding}"
+                                            ToolTip="Bu hesabı listeden kaldır"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- ALT BİLGİ VE İPUCU BARI (FOOTER) -->
+        <Border Grid.Row="3" Background="#181825" BorderBrush="#313244" BorderThickness="0,1,0,0" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           Text="💡 İpucu: Seçtiğiniz hesaba geçtiğinizde Google jetonu ve profil takas edilerek Antigravity o hesapla açılır. Dosyalarınız ve kodlarınız diskinizde olduğu için asla silinmez." 
+                           Foreground="#A6ADC8" FontSize="11" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Column="1" Text="v2.0 • Antigravity Account Switcher" 
+                           Foreground="#585B70" FontSize="11" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
